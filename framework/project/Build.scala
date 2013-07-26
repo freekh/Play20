@@ -382,7 +382,9 @@ object PlayBuild extends Build {
             scalaVersion        := buildScalaVersion,
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersion),
             ivyLoggingLevel     := UpdateLogging.DownloadOnly
-        ) ++ adeptSettings
+        ) ++ adeptSettings ++ Seq(
+          adeptRepositories += "central" -> "git@github.com:freekh/adept-central.git"
+        )
         val buildSettingsWithMIMA = buildSettings ++ mimaDefaultSettings
     }
 
