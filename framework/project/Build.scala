@@ -3,6 +3,8 @@ import Keys._
 import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
 import com.typesafe.tools.mima.plugin.MimaKeys.{previousArtifact, binaryIssueFilters}
 import com.typesafe.tools.mima.core._
+import adept.sbt.AdeptKeys._
+import adept.sbt.AdeptPlugin._
 
 object PlayBuild extends Build {
 
@@ -18,7 +20,7 @@ object PlayBuild extends Build {
         file("src/sbt-link"),
         settings = buildSettings ++ Seq(
             autoScalaLibrary := false,
-            libraryDependencies := link,
+            adeptDependencies := link,
             publishTo := Some(playRepository),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
             javacOptions in doc := Seq("-source", "1.6"),
@@ -34,7 +36,7 @@ object PlayBuild extends Build {
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"templates_"+previousScalaVersion} % previousVersion),
             publishTo := Some(playRepository),
-            libraryDependencies := templatesDependencies,
+            adeptDependencies := templatesDependencies,
             publishArtifact in packageDoc := buildWithDoc,
             publishArtifact in (Compile, packageSrc) := true,
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked")
@@ -48,7 +50,7 @@ object PlayBuild extends Build {
             scalaVersion := buildScalaVersionForSbt,
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersionForSbt),
             publishTo := Some(playRepository),
-            libraryDependencies := routersCompilerDependencies,
+            adeptDependencies := routersCompilerDependencies,
             publishArtifact in packageDoc := false,
             publishArtifact in (Compile, packageSrc) := false,
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked")
@@ -62,7 +64,7 @@ object PlayBuild extends Build {
             scalaVersion := buildScalaVersionForSbt,
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersionForSbt),
             publishTo := Some(playRepository),
-            libraryDependencies := templatesCompilerDependencies,
+            adeptDependencies := templatesCompilerDependencies,
             publishArtifact in packageDoc := false,
             publishArtifact in (Compile, packageSrc) := false,
             unmanagedJars in Compile <+= (baseDirectory) map { b => compilerJar(b / "../..") },
@@ -87,7 +89,7 @@ object PlayBuild extends Build {
         file("src/iteratees"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-iteratees_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := iterateesDependencies,
+            adeptDependencies := iterateesDependencies,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
             publishArtifact in packageDoc := buildWithDoc,
@@ -115,7 +117,7 @@ object PlayBuild extends Build {
         file("src/play"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := runtime,
+            adeptDependencies := runtime,
             sourceGenerators in Compile <+= sourceManaged in Compile map PlayVersion,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
@@ -181,7 +183,7 @@ object PlayBuild extends Build {
         file("src/play-java-ebean"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-java-ebean_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := ebeanDeps ++ jpaDeps,
+            adeptDependencies := ebeanDeps ++ jpaDeps,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -229,7 +231,7 @@ object PlayBuild extends Build {
         file("src/play-java"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-java_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := javaDeps,
+            adeptDependencies := javaDeps,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -245,7 +247,7 @@ object PlayBuild extends Build {
         file("src/play-test"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-test_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := testDependencies,
+            adeptDependencies := testDependencies,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -261,7 +263,7 @@ object PlayBuild extends Build {
       "Play-Integration-Test",
       file("src/play-integration-test"),
       settings = buildSettingsWithMIMA ++ Seq(
-        libraryDependencies := runtime,
+        adeptDependencies := runtime,
         publishTo := Some(playRepository),
         scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
         javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -278,9 +280,9 @@ object PlayBuild extends Build {
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersionForSbt),
             sbtPlugin := true,
             publishMavenStyle := false,
-            libraryDependencies := sbtDependencies,
-            libraryDependencies += "com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.1" extra("sbtVersion" -> buildSbtVersionBinaryCompatible, "scalaVersion" -> buildScalaVersionForSbt),
-            libraryDependencies += "com.typesafe.sbtidea" % "sbt-idea" % "1.1.1" extra("sbtVersion" -> buildSbtVersionBinaryCompatible, "scalaVersion" -> buildScalaVersionForSbt),
+            adeptDependencies := sbtDependencies,
+            adeptDependencies += "com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.1" extra("sbtVersion" -> buildSbtVersionBinaryCompatible, "scalaVersion" -> buildScalaVersionForSbt),
+            adeptDependencies += "com.typesafe.sbtidea" % "sbt-idea" % "1.1.1" extra("sbtVersion" -> buildSbtVersionBinaryCompatible, "scalaVersion" -> buildScalaVersionForSbt),
             unmanagedJars in Compile <++= (baseDirectory) map { b => sbtJars(b / "../..") },
             publishTo := Some(playIvyRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked"),
@@ -297,7 +299,7 @@ object PlayBuild extends Build {
         settings = buildSettings ++ Seq(
             scalaVersion := buildScalaVersionForSbt,
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersionForSbt),
-            libraryDependencies := consoleDependencies,
+            adeptDependencies := consoleDependencies,
             sourceGenerators in Compile <+= sourceManaged in Compile map PlayVersion,
             unmanagedJars in Compile <++=  (baseDirectory) map { b => sbtJars(b / "../..") },
             publishTo := Some(playRepository),
@@ -380,7 +382,7 @@ object PlayBuild extends Build {
             scalaVersion        := buildScalaVersion,
             scalaBinaryVersion  := CrossVersion.binaryScalaVersion(buildScalaVersion),
             ivyLoggingLevel     := UpdateLogging.DownloadOnly
-        )
+        ) ++ adeptSettings
         val buildSettingsWithMIMA = buildSettings ++ mimaDefaultSettings
     }
 
