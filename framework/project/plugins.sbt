@@ -10,5 +10,5 @@ addSbtPlugin( "com.typesafe.sbtscalariform" % "sbtscalariform" % "0.5.1")
 
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.1.0")
 
-addSbtPlugin("org.adept" % "adept-sbt" % "0.8.0-RC1")
+addSbtPlugin("org.adept" % "adept-sbt" % "0.8.0-PRE-ALPHA-20130727182728")
 
