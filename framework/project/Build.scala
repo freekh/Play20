@@ -152,7 +152,7 @@ object PlayBuild extends Build {
         file("src/play-jdbc"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-jdbc_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := jdbcDeps,
+            adeptDependencies := jdbcDeps,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -215,7 +215,7 @@ object PlayBuild extends Build {
         file("src/play-java-jpa"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"play-java-jpa_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := jpaDeps,
+            adeptDependencies := jpaDeps,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -314,7 +314,7 @@ object PlayBuild extends Build {
         file("src/play-filters-helpers"),
         settings = buildSettingsWithMIMA ++ Seq(
             previousArtifact := Some("play" % {"filters-helpers_"+previousScalaVersion} % previousVersion),
-            libraryDependencies := runtime,
+            adeptDependencies := runtime,
             publishTo := Some(playRepository),
             scalacOptions ++= Seq("-encoding", "UTF-8", "-Xlint","-deprecation", "-unchecked", "-feature"),
             javacOptions ++= Seq("-source","1.6","-target","1.6", "-encoding", "UTF-8"),
@@ -329,7 +329,7 @@ object PlayBuild extends Build {
         "Root",
         file("."),
         settings = buildSettings ++ Seq(
-            libraryDependencies := (runtime ++ jdbcDeps),
+            adeptDependencies := (runtime ++ jdbcDeps),
             cleanFiles ++= Seq(file("../dist"), file("../repository/local")),
             resetRepositoryTask,
             buildRepositoryTask,
@@ -490,7 +490,7 @@ object PlayBuild extends Build {
         val runtime = Seq(
             "io.netty"                          %    "netty"                    %   "3.6.3.Final",
 
-            "com.typesafe.netty"                %    "netty-http-pipelining"    %   "1.0.0",
+            ("com.typesafe.netty"                %    "netty-http-pipelining"    %   "1.0.0" exclude("junit", "junit")),
 
             "org.slf4j"                         %    "slf4j-api"                %   "1.6.6",
             "org.slf4j"                         %    "jul-to-slf4j"             %   "1.6.6",
